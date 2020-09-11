@@ -19,23 +19,14 @@ exports.getProducts = (req, res, next) => {
 exports.getOneProduct = (req, res, next) => {
     const prodId = req.params.productId;
     Product.findById(prodId)
-        .then(([row, fieldData])=> {
-            // console.log('result: ',row)
+        .then((result)=> {
             res.render('shops/product-detail', {
-                pageTitle: row[0].title,
-                product: row[0],
+                pageTitle: result.title,
+                product: result,
                 path: '/products' //for navigation bar's active button
             });
         })
         .catch(err => console.log(err));
-    // Product.findById(prodId, product => {
-    //     console.log('product: ', product)
-    //     res.render('shops/product-detail', {
-    //         pageTitle: product.title,
-    //         product: product,
-    //         path: '/products' //for navigation bar's active button
-    //     })
-    // })
 };
 
 exports.getCart = (req, res, next) => {
