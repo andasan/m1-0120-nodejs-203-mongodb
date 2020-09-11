@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const shopRoute = require('./routes/shop.route');
 const adminRoute = require('./routes/admin.route');
-const db = require('./util/database');
+const mongoConnect = require('./util/database').mongoConnect;
 
 //-------Middlewares
 
@@ -27,14 +27,8 @@ app.use(shopRoute);
 
 //-------end of Middlewares
 
-//Test DB
-// db.execute('SELECT * FROM products')
-//     .then((result)=> {
-//         //[database data], [metadata]
-//         console.log(result[0]);
-//     })
-//     .catch(err => console.log(err))
-
 //set up the port 
 const PORT = process.env.PORT || 8000;
-app.listen(PORT, ()=> console.log(`Server started at port ${PORT}.`))
+mongoConnect(() =>  {
+    app.listen(PORT, ()=> console.log(`Server started at port ${PORT}.`))
+})
