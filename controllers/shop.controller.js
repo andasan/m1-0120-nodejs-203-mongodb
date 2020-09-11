@@ -5,22 +5,14 @@ const Product = require('../models/product.model');
 exports.getProducts = (req, res, next) => {
     //fetchAll
     Product.fetchAll()
-        .then(([rows, fieldData]) => {
+        .then((products) => {
             res.render('shops/product-list', {
                 pageTitle: 'All Products',
-                products: rows,
+                products: products,
                 path: '/' //for navigation bar's active button
             });
         })
         .catch(err => console.log(err));
-    // Product.fetchAll(products => {
-    //     // res.json(products);
-    //     res.render('shops/product-list', {
-    //         pageTitle: 'All Products',
-    //         products: products,
-    //         path: '/' //for navigation bar's active button
-    //     });
-    // });
 };
 
 //getting one product

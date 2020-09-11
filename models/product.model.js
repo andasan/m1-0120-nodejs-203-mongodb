@@ -1,5 +1,5 @@
 const Cart = require('./cart.model');
-const db = require('../util/database');
+const getDb = require('../util/database').getDb;
 
 module.exports = class Products {
     constructor(id, title, imageUrl, description, price) {
@@ -9,38 +9,82 @@ module.exports = class Products {
         this.description = description;
         this.price = price;
     }
+
     //save
     save() {
-        return db.execute(
-            'INSERT INTO products (title, imageUrl, description, price) VALUES (?,?,?,?)', 
-            [this.title, this.imageUrl, this.description, this.price]
-        );
+        const db = getDb();
+        db.collection('products').insertOne({ 
+            title: this.title, 
+            imageUrl: this.imageUrl, 
+            description: this.description, 
+            price: this.price 
+        }); 
     }
 
     edit() {
-        return db.execute(
-            'UPDATE products SET title = ?, imageUrl = ?, description = ?, price = ? WHERE id = ?',
-            [this.title, this.imageUrl, this.description, this.price,  this.id]
-        );
     }
 
     //deletebyid
-    static deleteById(id){
-        return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
+    static deleteById(id) {
     }
 
     //fetch all data
-    static fetchAll(){
-        return db.execute('SELECT * FROM products');
+    static fetchAll() {
+        const db = getDb();
+        return db.collection('products').find().toArray();
     }
 
     //find by id
-    static findById(id){
-        return db.execute('SELECT * FROM products WHERE products.id = ?',[id]);
+    static findById(id) {
     }
 }
 
 
+
+
+
+/////////-------------- FROM MYSQL
+// module.exports = class Products {
+//     constructor(id, title, imageUrl, description, price) {
+//         this.id = id;
+//         this.title = title;
+//         this.imageUrl = imageUrl;
+//         this.description = description;
+//         this.price = price;
+//     }
+//     //save
+//     save() {
+//         return db.execute(
+//             'INSERT INTO products (title, imageUrl, description, price) VALUES (?,?,?,?)', 
+//             [this.title, this.imageUrl, this.description, this.price]
+//         );
+//     }
+
+//     edit() {
+//         return db.execute(
+//             'UPDATE products SET title = ?, imageUrl = ?, description = ?, price = ? WHERE id = ?',
+//             [this.title, this.imageUrl, this.description, this.price,  this.id]
+//         );
+//     }
+
+//     //deletebyid
+//     static deleteById(id){
+//         return db.execute('DELETE FROM products WHERE products.id = ?', [id]);
+//     }
+
+//     //fetch all data
+//     static fetchAll(){
+//         return db.execute('SELECT * FROM products');
+//     }
+
+//     //find by id
+//     static findById(id){
+//         return db.execute('SELECT * FROM products WHERE products.id = ?',[id]);
+//     }
+// }
+
+
+/////////-------------- FROM DUMMY DATA
 // const fs = require('fs');
 // const path = require('path');
 

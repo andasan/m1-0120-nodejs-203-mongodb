@@ -51,11 +51,11 @@ exports.postEditProduct = (req,res,next) => {
 
 exports.getProducts = (req,res,next) => {
     Product.fetchAll()
-        .then(([rows, fieldData]) => {
+        .then((products) => {
             res.render('admin/products', {
                 pageTitle: 'Admin Products',
                 path: '/admin/products',
-                prods: rows
+                prods: products
             });
         })
         .catch(err => console.log(err))
