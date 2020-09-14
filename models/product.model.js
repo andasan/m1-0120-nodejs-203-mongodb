@@ -4,7 +4,7 @@ const getDb = require('../util/database').getDb;
 
 module.exports = class Products {
     constructor(id, title, imageUrl, description, price) {
-        this.id = id;
+        //this.id = id;
         this.title = title;
         this.imageUrl = imageUrl;
         this.description = description;
@@ -14,19 +14,25 @@ module.exports = class Products {
     //save
     save() {
         const db = getDb();
-        db.collection('products').insertOne({ 
-            title: this.title, 
-            imageUrl: this.imageUrl, 
-            description: this.description, 
-            price: this.price 
-        }); 
+        db.collection('products').insertOne(this); 
+        // db.collection('products').insertOne({ 
+        //     title: this.title, 
+        //     imageUrl: this.imageUrl, 
+        //     description: this.description, 
+        //     price: this.price 
+        // }); 
     }
 
-    edit() {
+    edit(id) {
+        const db = getDb();
+        console.log(id);
+        return db.collection('products').updateOne({_id: new mongodb.ObjectID(id)}, {$set: this});
     }
 
     //deletebyid
     static deleteById(id) {
+        const db = getDb();
+        return db.collection('products').deleteOne({_id: new mongodb.ObjectID(id)});
     }
 
     //fetch all data
